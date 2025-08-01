@@ -8,6 +8,7 @@ This plugin integrates OpenAI's GPT and DALL-E APIs into Godot, allowing easy ac
 - DALL-E integration for image generation
 - Asynchronous API calls using Godot's HTTPRequest
 - Easy-to-use Message class for handling conversation context
+- Grader API support for validating and running graders
 
 ## Installation
 
@@ -87,7 +88,42 @@ func _ready():
 	open_ai.connect("dalle_response_completed", dalle_response_completed)
 
 func _on_dalle_response(texture: ImageTexture):
-	$Sprite2D.texture = texture
+        $Sprite2D.texture = texture
+```
+
+### Using Graders
+
+The plugin also provides helper methods for the Graders API. To validate a grader configuration:
+
+```gdscript
+var grader = {"type": "string_check", "input": "{{sample.output_text}}", "reference": "{{item.label}}", "operation": "eq"}
+openai.validate_grader(grader)
+```
+
+Listen for the response:
+
+```gdscript
+func _ready():
+        open_ai.connect("grader_validate_completed", _on_grader_validate)
+
+func _on_grader_validate(response: Dictionary):
+        print(response)
+```
+
+To run a grader against a model answer:
+
+```gdscript
+openai.run_grader(grader, "model output", {"label": "expected output"})
+```
+
+Handle the result:
+
+```gdscript
+func _ready():
+        open_ai.connect("grader_run_completed", _on_grader_run)
+
+func _on_grader_run(response: Dictionary):
+        print(response)
 ```
 
 ## Classes
@@ -107,3 +143,7 @@ Handles ChatGPT API requests.
 ### Dalle
 
 Handles DALL-E API requests.
+
+### Grader
+
+Provides helper methods for the Graders API.
