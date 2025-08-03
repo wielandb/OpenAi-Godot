@@ -143,19 +143,18 @@ func create_tool_response(call_id: String, response_content: String) -> void:
 	content = [{"type":"text", "text":response_content}]
 
 func isImageURL(url: String) -> bool:
-       # Determines if the provided string is a URL pointing to an image.
-       # We only check that the string starts with a valid URL scheme and is not
-       # a base64 data URI. Query parameters are ignored to allow URLs like
-       # `?image=file.jpg`.
-       if url.strip_edges() == "":
-               return false
+	   # Determines if the provided string is a URL pointing to an image.
+	   # We only check that the string starts with a valid URL scheme and is not
+	   # a base64 data URI. Query parameters are ignored to allow URLs like
+	   # `?image=file.jpg`.
+	if url.strip_edges() == "":
+		return false
 
-       var lower_url = url.to_lower()
+	var lower_url = url.to_lower()
 
-       if lower_url.begins_with("data:"):
-               return false
-
-       return lower_url.begins_with("http://") or lower_url.begins_with("https://")
+	if lower_url.begins_with("data:"):
+		return false
+	return lower_url.begins_with("http://") or lower_url.begins_with("https://")
 
 # This function uses the above isJpgOrPngURL() to check if the URL is valid,
 # and if so, returns "png" if the URL ends with .png or "jpg" if it ends with .jpg.
