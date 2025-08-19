@@ -6,6 +6,7 @@ This plugin integrates OpenAI's GPT and DALL-E APIs into Godot, allowing easy ac
 
 - ChatGPT integration for text generation
 - DALL-E integration for image generation
+- Embeddings integration for vector representations
 - Asynchronous API calls using Godot's HTTPRequest
 - Easy-to-use Message class for handling conversation context
 - Run and validate graders for fine-tuning workflows
@@ -108,3 +109,22 @@ Handles ChatGPT API requests.
 ### Dalle
 
 Handles DALL-E API requests.
+
+### Using Embeddings
+
+To get an embedding vector for a piece of text:
+
+```gdscript
+openai.create_embedding("Your text here")
+```
+
+Listen for the response:
+
+```gdscript
+func _ready():
+	open_ai.connect("embedding_received", _on_embedding)
+
+func _on_embedding(embedding: Array, response: Dictionary):
+	print(embedding.size())
+```
+
